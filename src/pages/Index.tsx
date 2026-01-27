@@ -1,13 +1,44 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { MainLayout } from '@/components/layout/MainLayout';
+import { HeroSection } from '@/components/sections/HeroSection';
+import { MapSection } from '@/components/sections/MapSection';
+import { NewsSection } from '@/components/sections/NewsSection';
+import { AppMappaSection } from '@/components/sections/AppMappaSection';
+import { CampaignsSection } from '@/components/sections/CampaignsSection';
+import { CollaborateSection } from '@/components/sections/CollaborateSection';
+import { ContactSection } from '@/components/sections/ContactSection';
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <MainLayout>
+      <HeroSection />
+      <MapSection />
+      
+      <NewsSection 
+        section="nodos"
+        id="nodos"
+        title="Nodos"
+        description="Espacios de encuentro y organización comunitaria en el territorio."
+      />
+      
+      <NewsSection 
+        section="centros_escucha"
+        id="centros-escucha"
+        title="Centros de Escucha"
+        description="Lugares seguros donde encontrar acompañamiento y contención."
+      />
+      
+      <NewsSection 
+        section="comunidad_practicas"
+        id="comunidad-practicas"
+        title="Comunidad de Prácticas"
+        description="Red de profesionales y voluntarios que comparten saberes y experiencias."
+      />
+      
+      <AppMappaSection />
+      <CampaignsSection />
+      <CollaborateSection />
+      <ContactSection />
+    </MainLayout>
   );
 };
 
