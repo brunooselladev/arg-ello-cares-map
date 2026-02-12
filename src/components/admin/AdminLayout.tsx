@@ -131,25 +131,25 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   }
 
   // Redirect if not authenticated or not admin
-  if (!user) {
-    return <Navigate to="/admin" replace />;
-  }
+  // if (!user) {
+  //   return <Navigate to="/admin" replace />;
+  // }
 
-  if (!isAdmin) {
-    return (
-      <div className="min-h-screen flex items-center justify-center p-4">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-foreground mb-2">Acceso Denegado</h1>
-          <p className="text-muted-foreground mb-4">
-            No tenés permisos de administrador.
-          </p>
-          <Button asChild>
-            <a href="/">Volver al inicio</a>
-          </Button>
-        </div>
-      </div>
-    );
-  }
+  // if (!isAdmin) {
+  //   return (
+  //     <div className="min-h-screen flex items-center justify-center p-4">
+  //       <div className="text-center">
+  //         <h1 className="text-2xl font-bold text-foreground mb-2">Acceso Denegado</h1>
+  //         <p className="text-muted-foreground mb-4">
+  //           No tenés permisos de administrador.
+  //         </p>
+  //         <Button asChild>
+  //           <a href="/">Volver al inicio</a>
+  //         </Button>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <SidebarProvider>
