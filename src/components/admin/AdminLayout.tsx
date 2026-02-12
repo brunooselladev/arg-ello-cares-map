@@ -1,30 +1,31 @@
-import { ReactNode } from 'react';
+﻿import { ReactNode } from 'react';
 import { Navigate, Link, useLocation } from 'react-router-dom';
-import { 
-  Heart, 
-  MapPin, 
-  Newspaper, 
-  Megaphone, 
-  Users, 
-  MessageSquare, 
+import {
+  Heart,
+  MapPin,
+  Newspaper,
+  Megaphone,
+  Users,
+  MessageSquare,
   Settings,
   LogOut,
   Home,
-  Menu
+  Menu,
+  ImageIcon,
+  Palette,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { 
-  Sidebar, 
-  SidebarContent, 
-  SidebarGroup, 
-  SidebarGroupContent, 
-  SidebarGroupLabel, 
-  SidebarMenu, 
-  SidebarMenuButton, 
-  SidebarMenuItem, 
-  SidebarProvider, 
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
   SidebarTrigger,
-  useSidebar
 } from '@/components/ui/sidebar';
 import { useAuth } from '@/hooks/useAuth';
 import { cn } from '@/lib/utils';
@@ -37,10 +38,12 @@ const menuItems = [
   { title: 'Dashboard', url: '/admin/dashboard', icon: Home },
   { title: 'Mapa', url: '/admin/map-points', icon: MapPin },
   { title: 'Novedades', url: '/admin/news', icon: Newspaper },
-  { title: 'Campañas', url: '/admin/campaigns', icon: Megaphone },
+  { title: 'Campanas', url: '/admin/campaigns', icon: Megaphone },
+  { title: 'Banners', url: '/admin/banners', icon: ImageIcon },
+  { title: 'Tema', url: '/admin/theme', icon: Palette },
   { title: 'Voluntarios', url: '/admin/volunteers', icon: Users },
   { title: 'Mensajes', url: '/admin/messages', icon: MessageSquare },
-  { title: 'Configuración', url: '/admin/settings', icon: Settings },
+  { title: 'Configuracion', url: '/admin/settings', icon: Settings },
 ];
 
 function AdminSidebar() {
@@ -54,7 +57,6 @@ function AdminSidebar() {
   return (
     <Sidebar className="border-r">
       <SidebarContent>
-        {/* Header */}
         <div className="p-4 border-b">
           <Link to="/admin/dashboard" className="flex items-center gap-2">
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary">
@@ -68,7 +70,7 @@ function AdminSidebar() {
         </div>
 
         <SidebarGroup>
-          <SidebarGroupLabel>Gestión</SidebarGroupLabel>
+          <SidebarGroupLabel>Gestion</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => {
@@ -80,9 +82,7 @@ function AdminSidebar() {
                         to={item.url}
                         className={cn(
                           'flex items-center gap-3 px-3 py-2 rounded-md transition-colors',
-                          isActive 
-                            ? 'bg-primary text-primary-foreground' 
-                            : 'hover:bg-muted'
+                          isActive ? 'bg-primary text-primary-foreground' : 'hover:bg-muted',
                         )}
                       >
                         <item.icon className="h-4 w-4" />
@@ -96,21 +96,20 @@ function AdminSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* Footer */}
         <div className="mt-auto p-4 border-t space-y-2">
           <Button variant="ghost" className="w-full justify-start" asChild>
-            <a href="/" target="_blank">
+            <a href="/" target="_blank" rel="noreferrer">
               <Home className="mr-2 h-4 w-4" />
-              Ver Sitio
+              Ver sitio
             </a>
           </Button>
-          <Button 
-            variant="ghost" 
+          <Button
+            variant="ghost"
             className="w-full justify-start text-destructive hover:text-destructive"
             onClick={handleSignOut}
           >
             <LogOut className="mr-2 h-4 w-4" />
-            Cerrar Sesión
+            Cerrar sesion
           </Button>
         </div>
       </SidebarContent>
@@ -121,7 +120,6 @@ function AdminSidebar() {
 export function AdminLayout({ children }: AdminLayoutProps) {
   const { user, isAdmin, isLoading } = useAuth();
 
-  // Show loading state
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -130,26 +128,23 @@ export function AdminLayout({ children }: AdminLayoutProps) {
     );
   }
 
-  // Redirect if not authenticated or not admin
-  // if (!user) {
-  //   return <Navigate to="/admin" replace />;
-  // }
+  if (!user) {
+    return <Navigate to="/admin" replace />;
+  }
 
-  // if (!isAdmin) {
-  //   return (
-  //     <div className="min-h-screen flex items-center justify-center p-4">
-  //       <div className="text-center">
-  //         <h1 className="text-2xl font-bold text-foreground mb-2">Acceso Denegado</h1>
-  //         <p className="text-muted-foreground mb-4">
-  //           No tenés permisos de administrador.
-  //         </p>
-  //         <Button asChild>
-  //           <a href="/">Volver al inicio</a>
-  //         </Button>
-  //       </div>
-  //     </div>
-  //   );
-  // }
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-foreground mb-2">Acceso denegado</h1>
+          <p className="text-muted-foreground mb-4">No tienes permisos de administrador.</p>
+          <Button asChild>
+            <a href="/">Volver al inicio</a>
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <SidebarProvider>
@@ -163,9 +158,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
               </Button>
             </SidebarTrigger>
           </header>
-          <main className="flex-1 p-6 bg-muted/30 overflow-auto">
-            {children}
-          </main>
+          <main className="flex-1 p-6 bg-muted/30 overflow-auto">{children}</main>
         </div>
       </div>
     </SidebarProvider>

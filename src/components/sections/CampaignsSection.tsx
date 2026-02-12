@@ -8,7 +8,7 @@ export function CampaignsSection() {
   const { data: campaigns = [], isLoading } = useCampaigns(4);
 
   return (
-    <section id="campanas" className="section-padding bg-muted/30">
+    <section id="campanas-proyecto" className="section-padding bg-muted/30">
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

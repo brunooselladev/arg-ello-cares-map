@@ -1,4 +1,4 @@
-import { Schema, model, Document } from 'mongoose';
+﻿import { Schema, model, Document } from 'mongoose';
 
 // --- Interfaces ---
 export interface IVolunteer extends Document {
@@ -20,8 +20,8 @@ const VolunteerSchema = new Schema<IVolunteer>({
   email: { 
     type: String, 
     required: [true, 'El email es obligatorio.'],
-    // Podríamos añadir validación de email aquí
-    match: [/.+\@.+\..+/, 'Por favor, introduce un email válido.']
+    // PodrÃ­amos aÃ±adir validaciÃ³n de email aquÃ­
+    match: [/.+@.+\..+/, 'Por favor, introduce un email vÃ¡lido.']
   },
   phone: { 
     type: String 
@@ -33,7 +33,7 @@ const VolunteerSchema = new Schema<IVolunteer>({
     type: String
   }
 }, {
-  timestamps: { createdAt: true, updatedAt: false } // Solo necesitamos createdAt según el schema SQL
+  timestamps: { createdAt: true, updatedAt: false } // Solo necesitamos createdAt segÃºn el schema SQL
 });
 
 
@@ -41,3 +41,4 @@ const VolunteerSchema = new Schema<IVolunteer>({
 const Volunteer = model<IVolunteer>('Volunteer', VolunteerSchema);
 
 export default Volunteer;
+

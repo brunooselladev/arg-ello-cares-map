@@ -1,28 +1,78 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import type { News, NewsSection } from '@/types/database';
+﻿import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { apiRequest, PaginatedResponse } from '@/lib/apiClient';
+import type { News, NewsCategory } from '@/types/database';
 
-export function useNews(section?: NewsSection | null, limit?: number) {
+export interface CreateNewsInput {
+  title: string;
+  content: string;
+  summary: string;
+  image?: string | null;
+  category: NewsCategory;
+  videoUrl?: string | null;
+  date?: string | null;
+  author?: string | null;
+  tags?: string[] | null;
+  visible?: boolean;
+}
+
+export interface UpdateNewsInput extends Partial<CreateNewsInput> {
+  id: string;
+}
+
+export function useNews(category?: NewsCategory | null, limit = 20, includeHidden = false) {
   return useQuery({
-    queryKey: ['news', section, limit],
+    queryKey: ['news', category, limit, includeHidden],
     queryFn: async () => {
-      let query = supabase
-        .from('news')
-        .select('*')
-        .order('published_at', { ascending: false });
+      const response = await apiRequest<PaginatedResponse<News>>('/news', {
+        params: {
+          category: category ?? undefined,
+          page: 1,
+          limit,
+          includeHidden,
+        },
+      });
 
-      if (section) {
-        query = query.eq('section', section);
-      }
+      return response.items;
+    },
+  });
+}
 
-      if (limit) {
-        query = query.limit(limit);
-      }
+export function useNewsPage(
+  category: NewsCategory,
+  page: number,
+  limit: number,
+  includeHidden = false,
+) {
+  return useQuery({
+    queryKey: ['news-page', category, page, limit, includeHidden],
+    queryFn: () =>
+      apiRequest<PaginatedResponse<News>>('/news', {
+        params: {
+          category,
+          page,
+          limit,
+          includeHidden,
+        },
+      }),
+  });
+}
 
-      const { data, error } = await query;
-      
-      if (error) throw error;
-      return data as News[];
+export function useInfiniteNews(category: NewsCategory, limit = 6) {
+  return useInfiniteQuery({
+    queryKey: ['news-infinite', category, limit],
+    initialPageParam: 1,
+    queryFn: ({ pageParam }) =>
+      apiRequest<PaginatedResponse<News>>('/news', {
+        params: {
+          category,
+          page: pageParam,
+          limit,
+          includeHidden: false,
+        },
+      }),
+    getNextPageParam: (lastPage) => {
+      if (lastPage.page >= lastPage.totalPages) return undefined;
+      return lastPage.page + 1;
     },
   });
 }
@@ -30,17 +80,8 @@ export function useNews(section?: NewsSection | null, limit?: number) {
 export function useNewsById(id: string) {
   return useQuery({
     queryKey: ['news', id],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('news')
-        .select('*')
-        .eq('id', id)
-        .maybeSingle();
-
-      if (error) throw error;
-      return data as News | null;
-    },
-    enabled: !!id,
+    enabled: Boolean(id),
+    queryFn: () => apiRequest<News>(`/news/${id}`),
   });
 }
 
@@ -48,18 +89,15 @@ export function useCreateNews() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (news: Omit<News, 'id' | 'created_at' | 'updated_at'>) => {
-      const { data, error } = await supabase
-        .from('news')
-        .insert(news)
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data;
-    },
+    mutationFn: (payload: CreateNewsInput) =>
+      apiRequest<News>('/news', {
+        method: 'POST',
+        body: payload,
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['news'] });
+      queryClient.invalidateQueries({ queryKey: ['news-page'] });
+      queryClient.invalidateQueries({ queryKey: ['news-infinite'] });
     },
   });
 }
@@ -68,19 +106,32 @@ export function useUpdateNews() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ id, ...updates }: Partial<News> & { id: string }) => {
-      const { data, error } = await supabase
-        .from('news')
-        .update(updates)
-        .eq('id', id)
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data;
-    },
+    mutationFn: ({ id, ...payload }: UpdateNewsInput) =>
+      apiRequest<News>(`/news/${id}`, {
+        method: 'PATCH',
+        body: payload,
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['news'] });
+      queryClient.invalidateQueries({ queryKey: ['news-page'] });
+      queryClient.invalidateQueries({ queryKey: ['news-infinite'] });
+    },
+  });
+}
+
+export function useToggleNewsVisibility() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, visible }: { id: string; visible: boolean }) =>
+      apiRequest<News>(`/news/${id}/visibility`, {
+        method: 'PATCH',
+        body: { visible },
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['news'] });
+      queryClient.invalidateQueries({ queryKey: ['news-page'] });
+      queryClient.invalidateQueries({ queryKey: ['news-infinite'] });
     },
   });
 }
@@ -89,16 +140,14 @@ export function useDeleteNews() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase
-        .from('news')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
-    },
+    mutationFn: (id: string) =>
+      apiRequest<{ msg: string }>(`/news/${id}`, {
+        method: 'DELETE',
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['news'] });
+      queryClient.invalidateQueries({ queryKey: ['news-page'] });
+      queryClient.invalidateQueries({ queryKey: ['news-infinite'] });
     },
   });
 }

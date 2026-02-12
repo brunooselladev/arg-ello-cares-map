@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+﻿import { useEffect, useMemo, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -8,7 +8,7 @@ import { MapFilters } from './MapFilters';
 import { MapPin, Phone, Mail, MapPinned } from 'lucide-react';
 
 // Fix Leaflet default icon issue
-delete (L.Icon.Default.prototype as any)._getIconUrl;
+delete (L.Icon.Default.prototype as unknown as { _getIconUrl?: unknown })._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
   iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
@@ -40,7 +40,7 @@ const markerColors: Record<MapPointType, string> = {
   comunidad_practicas: 'hsl(280, 40%, 50%)',
 };
 
-// Gran Argüello center coordinates (approximate)
+// Gran ArgÃ¼ello center coordinates (approximate)
 const CENTER: [number, number] = [-31.3856, -64.2325];
 const DEFAULT_ZOOM = 13;
 
@@ -155,3 +155,4 @@ export function InteractiveMap() {
     </div>
   );
 }
+

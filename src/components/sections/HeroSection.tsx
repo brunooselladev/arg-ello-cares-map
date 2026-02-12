@@ -1,17 +1,11 @@
-import { motion } from 'framer-motion';
+﻿import { motion } from 'framer-motion';
 import { Heart, Users, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useAppUserCount } from '@/hooks/useSiteConfig';
 
 export function HeroSection() {
-  const { count: userCount, isLoading } = useAppUserCount();
-
   return (
     <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-      {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/10" />
-      
-      {/* Decorative elements */}
       <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl" />
       <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent/20 rounded-full blur-3xl" />
 
@@ -34,8 +28,7 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight"
           >
-            Red de Cuidados del{' '}
-            <span className="text-primary">Gran Argüello</span>
+            Red de Cuidados del <span className="text-primary">Gran Arguello</span>
           </motion.h1>
 
           <motion.p
@@ -44,7 +37,7 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto"
           >
-            Una red territorial de contención, acompañamiento y promoción de la salud mental. 
+            Una red territorial de contencion, acompanamiento y promocion de la salud mental.
             Porque cuidarnos entre todos es la mejor forma de cuidar.
           </motion.p>
 
@@ -57,17 +50,14 @@ export function HeroSection() {
             <Button size="lg" asChild>
               <a href="#mapa">
                 <MapPin className="mr-2 h-5 w-5" />
-                Ver el Mapa
+                Ver el mapa
               </a>
             </Button>
             <Button size="lg" variant="outline" asChild>
-              <a href="#app-mappa">
-                Conocé la App MAPPA
-              </a>
+              <a href="#app-mappa">Conoce la App MAPPA</a>
             </Button>
           </motion.div>
 
-          {/* Stats */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -76,20 +66,18 @@ export function HeroSection() {
           >
             <div className="p-4 rounded-lg bg-card border">
               <Users className="h-6 w-6 text-primary mx-auto mb-2" />
-              <p className="text-2xl font-bold text-foreground">
-                {isLoading ? '...' : userCount.toLocaleString()}
-              </p>
+              <p className="text-2xl font-bold text-foreground">1500+</p>
               <p className="text-sm text-muted-foreground">Usuarios de la App</p>
             </div>
             <div className="p-4 rounded-lg bg-card border">
               <MapPin className="h-6 w-6 text-primary mx-auto mb-2" />
               <p className="text-2xl font-bold text-foreground">15+</p>
-              <p className="text-sm text-muted-foreground">Puntos en la Red</p>
+              <p className="text-sm text-muted-foreground">Puntos en la red</p>
             </div>
             <div className="p-4 rounded-lg bg-card border">
               <Heart className="h-6 w-6 text-primary mx-auto mb-2" />
               <p className="text-2xl font-bold text-foreground">24/7</p>
-              <p className="text-sm text-muted-foreground">Acompañamiento</p>
+              <p className="text-sm text-muted-foreground">Acompanamiento</p>
             </div>
           </motion.div>
         </div>

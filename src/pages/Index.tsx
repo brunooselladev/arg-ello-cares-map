@@ -1,4 +1,5 @@
-import { MainLayout } from '@/components/layout/MainLayout';
+﻿import { MainLayout } from '@/components/layout/MainLayout';
+import { BannerCarousel } from '@/components/sections/BannerCarousel';
 import { HeroSection } from '@/components/sections/HeroSection';
 import { MapSection } from '@/components/sections/MapSection';
 import { NewsSection } from '@/components/sections/NewsSection';
@@ -10,30 +11,38 @@ import { ContactSection } from '@/components/sections/ContactSection';
 const Index = () => {
   return (
     <MainLayout>
+      <BannerCarousel autoplay />
       <HeroSection />
       <MapSection />
-      
-      <NewsSection 
-        section="nodos"
+
+      <NewsSection
+        category="nodos"
         id="nodos"
         title="Nodos"
-        description="Espacios de encuentro y organización comunitaria en el territorio."
+        description="Espacios de encuentro y organizacion comunitaria en el territorio."
       />
-      
-      <NewsSection 
-        section="centros_escucha"
-        id="centros-escucha"
-        title="Centros de Escucha"
-        description="Lugares seguros donde encontrar acompañamiento y contención."
+
+      <NewsSection
+        category="campanas"
+        id="campanas"
+        title="Campanas"
+        description="Acciones comunitarias para promover el cuidado colectivo."
       />
-      
-      <NewsSection 
-        section="comunidad_practicas"
-        id="comunidad-practicas"
-        title="Comunidad de Prácticas"
-        description="Red de profesionales y voluntarios que comparten saberes y experiencias."
+
+      <NewsSection
+        category="centros"
+        id="centros"
+        title="Centros"
+        description="Puntos de escucha y acompanamiento en el barrio."
       />
-      
+
+      <NewsSection
+        category="comunidad"
+        id="comunidad"
+        title="Comunidad"
+        description="Experiencias y aprendizajes compartidos por la red."
+      />
+
       <AppMappaSection />
       <CampaignsSection />
       <CollaborateSection />

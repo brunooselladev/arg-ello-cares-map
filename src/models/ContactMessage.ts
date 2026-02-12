@@ -1,4 +1,4 @@
-import { Schema, model, Document } from 'mongoose';
+﻿import { Schema, model, Document } from 'mongoose';
 
 // --- Interfaces ---
 export interface IContactMessage extends Document {
@@ -20,7 +20,7 @@ const ContactMessageSchema = new Schema<IContactMessage>({
   email: { 
     type: String, 
     required: [true, 'El email es obligatorio.'],
-    match: [/.+\@.+\..+/, 'Por favor, introduce un email válido.']
+    match: [/.+@.+\..+/, 'Por favor, introduce un email vÃ¡lido.']
   },
   subject: {
     type: String
@@ -34,13 +34,14 @@ const ContactMessageSchema = new Schema<IContactMessage>({
     default: false 
   },
 }, {
-  timestamps: true // Esto añade createdAt y updatedAt automáticamente
+  timestamps: true // Esto aÃ±ade createdAt y updatedAt automÃ¡ticamente
 });
 
-// --- Índices ---
+// --- Ãndices ---
 ContactMessageSchema.index({ isRead: 1 });
 
 // --- Modelo ---
 const ContactMessage = model<IContactMessage>('ContactMessage', ContactMessageSchema);
 
 export default ContactMessage;
+

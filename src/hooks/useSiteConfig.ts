@@ -1,48 +1,25 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
+﻿import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { apiRequest } from '@/lib/apiClient';
 import type { SiteConfig } from '@/types/database';
 
-export function useSiteConfig(key: string) {
+export function useThemeConfig() {
   return useQuery({
-    queryKey: ['site-config', key],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('site_config')
-        .select('*')
-        .eq('key', key)
-        .maybeSingle();
-
-      if (error) throw error;
-      return data as SiteConfig | null;
-    },
+    queryKey: ['theme-config'],
+    queryFn: () => apiRequest<SiteConfig>('/config'),
   });
 }
 
-export function useAppUserCount() {
-  const { data, isLoading } = useSiteConfig('app_user_count');
-  return {
-    count: data?.value ? parseInt(data.value, 10) : 0,
-    isLoading,
-  };
-}
-
-export function useUpdateSiteConfig() {
+export function useUpdateThemeConfig() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ key, value }: { key: string; value: string }) => {
-      const { data, error } = await supabase
-        .from('site_config')
-        .update({ value })
-        .eq('key', key)
-        .select()
-        .single();
-
-      if (error) throw error;
-      return data;
-    },
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ['site-config', variables.key] });
+    mutationFn: (primaryColor: string) =>
+      apiRequest<SiteConfig>('/config', {
+        method: 'PATCH',
+        body: { primaryColor },
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['theme-config'] });
     },
   });
 }

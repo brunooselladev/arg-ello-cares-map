@@ -1,8 +1,6 @@
-// Types for Red de Cuidados del Gran Argüello
-
-export type MapPointType = 'nodo' | 'centro_escucha' | 'comunidad_practicas';
-export type NewsSection = 'nodos' | 'centros_escucha' | 'comunidad_practicas' | 'app_mappa' | 'campanas';
-export type AppRole = 'admin' | 'editor';
+﻿export type MapPointType = 'nodo' | 'centro_escucha' | 'comunidad_practicas';
+export type NewsCategory = 'nodos' | 'campanas' | 'centros' | 'comunidad';
+export type AppRole = 'admin' | 'user';
 
 export interface MapPoint {
   id: string;
@@ -23,14 +21,16 @@ export interface News {
   id: string;
   title: string;
   content: string;
-  excerpt: string | null;
-  image_url: string | null;
-  image_caption: string | null;
-  section: NewsSection;
-  is_visible: boolean;
-  published_at: string;
-  created_at: string;
-  updated_at: string;
+  summary: string;
+  image: string | null;
+  category: NewsCategory;
+  videoUrl: string | null;
+  date: string | null;
+  author: string | null;
+  tags: string[] | null;
+  visible: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Campaign {
@@ -68,32 +68,33 @@ export interface ContactMessage {
 
 export interface SiteConfig {
   id: string;
-  key: string;
-  value: string | null;
-  description: string | null;
-  updated_at: string;
+  primaryColor: string;
+  updatedAt: string;
 }
 
-export interface UserRole {
+export interface Banner {
   id: string;
-  user_id: string;
-  role: AppRole;
-  created_at: string;
+  imageUrl: string;
+  createdAt: string;
 }
 
-// UI Helper types
+export interface AuthUser {
+  id: string;
+  email: string;
+  role: AppRole;
+}
+
 export const MAP_POINT_LABELS: Record<MapPointType, string> = {
   nodo: 'Nodo',
-  centro_escucha: 'Centro de Escucha',
-  comunidad_practicas: 'Comunidad de Prácticas',
+  centro_escucha: 'Centro de escucha',
+  comunidad_practicas: 'Comunidad de practicas',
 };
 
-export const NEWS_SECTION_LABELS: Record<NewsSection, string> = {
+export const NEWS_CATEGORY_LABELS: Record<NewsCategory, string> = {
   nodos: 'Nodos',
-  centros_escucha: 'Centros de Escucha',
-  comunidad_practicas: 'Comunidad de Prácticas',
-  app_mappa: 'App MAPPA',
-  campanas: 'Campañas',
+  campanas: 'Campanas',
+  centros: 'Centros',
+  comunidad: 'Comunidad',
 };
 
 export const MAP_POINT_COLORS: Record<MapPointType, string> = {

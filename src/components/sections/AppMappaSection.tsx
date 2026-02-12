@@ -1,28 +1,25 @@
-import { motion } from 'framer-motion';
+﻿import { motion } from 'framer-motion';
 import { Smartphone, HeartHandshake, Users, ArrowRight, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { useNews } from '@/hooks/useNews';
-import { NewsCard } from '@/components/ui/NewsCard';
 
 export function AppMappaSection() {
-  const { data: news = [] } = useNews('app_mappa', 2);
-
   const features = [
     {
       icon: Smartphone,
-      title: 'Proceso de Armado',
-      description: 'Una app construida con y para la comunidad, diseñada desde las necesidades reales del territorio.',
+      title: 'Proceso de armado',
+      description:
+        'Una app construida con y para la comunidad, disenada desde necesidades reales del territorio.',
     },
     {
       icon: Users,
-      title: 'Reglas de Convivencia',
-      description: 'Espacios seguros y respetuosos. Protocolos claros para el acompañamiento entre pares.',
+      title: 'Reglas de convivencia',
+      description: 'Espacios seguros y respetuosos con protocolos claros para el acompanamiento entre pares.',
     },
     {
       icon: Sparkles,
-      title: 'Futuro del Proyecto',
-      description: 'Expandiendo la red, sumando funcionalidades y llegando a más personas que necesitan apoyo.',
+      title: 'Futuro del proyecto',
+      description: 'Expandimos la red, sumamos funcionalidades y llegamos a mas personas.',
     },
   ];
 
@@ -36,15 +33,12 @@ export function AppMappaSection() {
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            App MAPPA
-          </h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">App MAPPA</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Una herramienta digital para conectar personas que necesitan ayuda con quienes pueden ofrecerla.
           </p>
         </motion.div>
 
-        {/* Features */}
         <div className="grid md:grid-cols-3 gap-6 mb-12">
           {features.map((feature, index) => (
             <motion.div
@@ -67,46 +61,31 @@ export function AppMappaSection() {
           ))}
         </div>
 
-        {/* CTAs */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.3 }}
-          className="grid sm:grid-cols-2 gap-6 max-w-2xl mx-auto mb-12"
+          className="grid sm:grid-cols-2 gap-6 max-w-2xl mx-auto"
         >
           <Card className="p-6 bg-primary text-primary-foreground text-center hover:bg-primary/90 transition-colors cursor-pointer">
             <HeartHandshake className="h-10 w-10 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-2">Necesito Ayuda</h3>
-            <p className="text-sm opacity-90 mb-4">No estás solo/a. Conectate con nuestra red de contención.</p>
+            <h3 className="text-xl font-semibold mb-2">Necesito ayuda</h3>
+            <p className="text-sm opacity-90 mb-4">No estas solo/a. Conectate con nuestra red de contencion.</p>
             <Button variant="secondary" className="w-full">
-              Buscar Apoyo <ArrowRight className="ml-2 h-4 w-4" />
+              Buscar apoyo <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </Card>
 
           <Card className="p-6 bg-card border-2 border-primary text-center hover:bg-accent transition-colors cursor-pointer">
             <Users className="h-10 w-10 mx-auto mb-4 text-primary" />
-            <h3 className="text-xl font-semibold text-foreground mb-2">Ofrezco Ayuda</h3>
-            <p className="text-sm text-muted-foreground mb-4">Sumate a la red y acompañá a quienes más lo necesitan.</p>
+            <h3 className="text-xl font-semibold text-foreground mb-2">Ofrezco ayuda</h3>
+            <p className="text-sm text-muted-foreground mb-4">Sumate a la red y acompana a quienes mas lo necesitan.</p>
             <Button className="w-full">
-              Ser Voluntario <ArrowRight className="ml-2 h-4 w-4" />
+              Ser voluntario <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </Card>
         </motion.div>
-
-        {/* Related News */}
-        {news.length > 0 && (
-          <div className="mt-16">
-            <h3 className="text-xl font-semibold text-foreground text-center mb-6">
-              Novedades de la App
-            </h3>
-            <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-              {news.map((item, index) => (
-                <NewsCard key={item.id} news={item} index={index} />
-              ))}
-            </div>
-          </div>
-        )}
       </div>
     </section>
   );

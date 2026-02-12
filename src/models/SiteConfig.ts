@@ -1,35 +1,33 @@
-import { Schema, model, Document } from 'mongoose';
+﻿import mongoose, { Document, Schema } from 'mongoose';
 
-// --- Interfaces ---
+const sanitizeColor = (value: unknown): string => {
+  if (typeof value !== 'string') return '#2d8f78';
+  const color = value.trim();
+  if (/^#(?:[0-9a-fA-F]{3}){1,2}$/.test(color)) return color;
+  return '#2d8f78';
+};
+
 export interface ISiteConfig extends Document {
-  key: string;
-  value?: string;
-  description?: string;
+  primaryColor: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
-// --- Schema ---
-const SiteConfigSchema = new Schema<ISiteConfig>({
-  key: { 
-    type: String, 
-    required: true,
-    unique: true
+const SiteConfigSchema = new Schema<ISiteConfig>(
+  {
+    primaryColor: {
+      type: String,
+      required: [true, 'El color primario es obligatorio.'],
+      default: '#2d8f78',
+      set: sanitizeColor,
+    },
   },
-  value: { 
-    type: String 
+  {
+    timestamps: true,
   },
-  description: {
-    type: String
-  }
-}, {
-  timestamps: true // Esto añade createdAt y updatedAt automáticamente
-});
+);
 
-// --- Índices ---
-SiteConfigSchema.index({ key: 1 }, { unique: true });
-
-// --- Modelo ---
-const SiteConfig = model<ISiteConfig>('SiteConfig', SiteConfigSchema);
+const SiteConfig =
+  mongoose.models.SiteConfig || mongoose.model<ISiteConfig>('SiteConfig', SiteConfigSchema);
 
 export default SiteConfig;
