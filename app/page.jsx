@@ -1,8 +1,8 @@
 'use client';
 
-import IndexPage from '@/views/Index';
+import IndexOptimized from '@/views/IndexOptimized';
 
 export default function Page() {
-  return <IndexPage />;
+  return <IndexOptimized />;
 }
 
