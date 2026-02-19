@@ -8,7 +8,7 @@ const InteractiveMap = dynamic(
   },
 );
 export function MapSection() {
-    return (<section id="mapa" className="section-padding bg-muted/30">
+    return (<section id="mapa" className="section-padding pt-0 bg-muted/30">
       <div className="container">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">

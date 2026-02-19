@@ -2,12 +2,12 @@ import { motion } from 'framer-motion';
 import { Heart, Users, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 export function HeroSection() {
-    return (<section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+    return (<section className="relative min-h-[75vh] flex items-center justify-center overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/10"/>
       <div className="absolute top-20 left-10 w-72 h-72 bg-primary/10 rounded-full blur-3xl"/>
       <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent/20 rounded-full blur-3xl"/>
 
-      <div className="container relative z-10 py-20">
+      <div className="container relative z-10 pt-0 pb-0 py-20">
         <div className="max-w-4xl mx-auto text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-6">

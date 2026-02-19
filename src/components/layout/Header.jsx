@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Menu, X, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -14,7 +15,9 @@ const navigation = [
     { name: 'Contacto', href: '/#contacto' },
 ];
 export function Header() {
+
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
     const handleNavClick = (href) => {
         setMobileMenuOpen(false);
         if (href.startsWith('/#')) {
@@ -25,11 +28,12 @@ export function Header() {
             }
         }
     };
+
     return (<header className="fixed top-0 left-0 right-0 z-50 glass">
       <nav className="container flex items-center justify-between py-4">
         <Link href="/" className="flex items-center gap-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary">
-            <Heart className="h-5 w-5 text-primary-foreground"/>
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white">
+            <Image src="/logo.png" alt="Logo" width={40} height={40} />
           </div>
           <div className="hidden sm:block">
             <p className="text-sm font-semibold text-foreground">Red de Cuidados</p>
