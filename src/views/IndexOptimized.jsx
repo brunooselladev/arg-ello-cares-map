@@ -62,12 +62,7 @@ export default function OptimizedIndex() {
       </SectionSuspense>
 
       <SectionSuspense fallback={<NewsSectionSkeleton />}>
-        <NewsSection
-          category="campanas"
-          id="campanas"
-          title="Campanas"
-          description="Acciones comunitarias para promover el cuidado colectivo."
-        />
+        <CampaignsSection />
       </SectionSuspense>
 
       <SectionSuspense fallback={<NewsSectionSkeleton />}>
@@ -90,10 +85,6 @@ export default function OptimizedIndex() {
 
       <SectionSuspense fallback={<NewsSectionSkeleton />}>
         <AppMappaSection />
-      </SectionSuspense>
-
-      <SectionSuspense fallback={<NewsSectionSkeleton />}>
-        <CampaignsSection />
       </SectionSuspense>
 
       <SectionSuspense fallback={<NewsSectionSkeleton />}>

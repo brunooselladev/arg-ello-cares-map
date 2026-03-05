@@ -6,17 +6,21 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Plus, Pencil, Trash2 } from 'lucide-react';
+import { Plus, Pencil, Trash2, Image, Video } from 'lucide-react';
 import { useCampaigns, useCreateCampaign, useUpdateCampaign, useDeleteCampaign } from '@/hooks/useCampaigns';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+
 const emptyForm = {
     title: '',
     description: '',
+    media_type: 'image',
     image_url: '',
     video_url: '',
+    link_url: '',
     is_active: true,
     start_date: '',
     end_date: '',
@@ -32,11 +36,21 @@ export default function AdminCampaigns() {
     const { toast } = useToast();
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (form.media_type === 'image' && !form.image_url.trim()) {
+            toast({ title: 'Ingresá una URL de imagen', variant: 'destructive' });
+            return;
+        }
+        if (form.media_type === 'video' && !form.video_url.trim()) {
+            toast({ title: 'Ingresá una URL de video', variant: 'destructive' });
+            return;
+        }
         const data = {
             title: form.title,
             description: form.description || null,
-            image_url: form.image_url || null,
-            video_url: form.video_url || null,
+            media_type: form.media_type,
+            image_url: form.media_type === 'image' ? (form.image_url || null) : null,
+            video_url: form.media_type === 'video' ? (form.video_url || null) : null,
+            link_url: form.link_url || null,
             is_active: form.is_active,
             start_date: form.start_date || null,
             end_date: form.end_date || null,
@@ -61,8 +75,10 @@ export default function AdminCampaigns() {
         setForm({
             title: campaign.title,
             description: campaign.description || '',
+            media_type: campaign.media_type || (campaign.video_url ? 'video' : 'image'),
             image_url: campaign.image_url || '',
             video_url: campaign.video_url || '',
+            link_url: campaign.link_url || '',
             is_active: campaign.is_active,
             start_date: campaign.start_date || '',
             end_date: campaign.end_date || '',
@@ -120,13 +136,35 @@ export default function AdminCampaigns() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="image_url">URL de Imagen</Label>
-                  <Input id="image_url" value={form.image_url} onChange={(e) => setForm({ ...form, image_url: e.target.value })} placeholder="https://..."/>
+                  <Label htmlFor="media_type">Tipo de medio *</Label>
+                  <Select value={form.media_type} onValueChange={(v) => setForm({ ...form, media_type: v })}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="image"><span className="flex items-center gap-2"><Image className="h-4 w-4"/>Imagen</span></SelectItem>
+                      <SelectItem value="video"><span className="flex items-center gap-2"><Video className="h-4 w-4"/>Video</span></SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
+                {form.media_type === 'image' && (
+                  <div className="space-y-2">
+                    <Label htmlFor="image_url">URL de Imagen *</Label>
+                    <Input id="image_url" value={form.image_url} onChange={(e) => setForm({ ...form, image_url: e.target.value })} placeholder="https://..."/>
+                  </div>
+                )}
+
+                {form.media_type === 'video' && (
+                  <div className="space-y-2">
+                    <Label htmlFor="video_url">URL de Video *</Label>
+                    <Input id="video_url" value={form.video_url} onChange={(e) => setForm({ ...form, video_url: e.target.value })} placeholder="https://youtube.com/watch?v=..."/>
+                  </div>
+                )}
+
                 <div className="space-y-2">
-                  <Label htmlFor="video_url">URL de Video (opcional)</Label>
-                  <Input id="video_url" value={form.video_url} onChange={(e) => setForm({ ...form, video_url: e.target.value })} placeholder="https://youtube.com/..."/>
+                  <Label htmlFor="link_url">Link externo (opcional)</Label>
+                  <Input id="link_url" value={form.link_url} onChange={(e) => setForm({ ...form, link_url: e.target.value })} placeholder="https://..."/>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
@@ -166,6 +204,7 @@ export default function AdminCampaigns() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Título</TableHead>
+                    <TableHead>Medio</TableHead>
                     <TableHead>Descripción</TableHead>
                     <TableHead>Estado</TableHead>
                     <TableHead className="w-[100px]">Acciones</TableHead>

@@ -1,7 +1,7 @@
 export const MAP_POINT_LABELS = {
     nodo: 'Nodo',
     centro_escucha: 'Centro de escucha',
-    comunidad_practicas: 'Comunidad de practicas',
+    comunidad_practicas: 'Comunidad de prácticas',
 };
 export const NEWS_CATEGORY_LABELS = {
     nodos: 'Nodos',

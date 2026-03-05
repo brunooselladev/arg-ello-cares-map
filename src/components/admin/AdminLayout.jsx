@@ -5,6 +5,8 @@ import { Heart, MapPin, Newspaper, Megaphone, Users, MessageSquare, Settings, Lo
 import { Button } from '@/components/ui/button';
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger, } from '@/components/ui/sidebar';
 import { useAuth } from '@/hooks/useAuth';
+import { useThemeConfig } from '@/hooks/useSiteConfig';
+import { hexToHslChannels } from '@/lib/color';
 import { cn } from '@/lib/utils';
 const menuItems = [
     { title: 'Dashboard', url: '/admin/dashboard', icon: Home },
@@ -74,6 +76,15 @@ function AdminSidebar() {
 export function AdminLayout({ children }) {
     const { user, isAdmin, isLoading } = useAuth();
     const router = useRouter();
+    const { data: themeConfig } = useThemeConfig();
+    useEffect(() => {
+        if (!themeConfig?.primaryColor) return;
+        const hsl = hexToHslChannels(themeConfig.primaryColor);
+        if (!hsl) return;
+        document.documentElement.style.setProperty('--primary', hsl);
+        document.documentElement.style.setProperty('--ring', hsl);
+        document.documentElement.style.setProperty('--sidebar-primary', hsl);
+    }, [themeConfig?.primaryColor]);
     useEffect(() => {
         if (!isLoading && !user) {
             router.replace('/admin');

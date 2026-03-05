@@ -21,6 +21,23 @@ const parseNumber = (value) => {
   return Number.isFinite(parsed) ? parsed : null;
 };
 
+const sanitizeStringArray = (value) => {
+  if (!Array.isArray(value)) return [];
+  return value.map((v) => (typeof v === 'string' ? v.trim() : '')).filter(Boolean);
+};
+
+const sanitizeActivities = (value) => {
+  if (!Array.isArray(value)) return [];
+  return value.map((a) => ({
+    name: typeof a?.name === 'string' ? a.name.trim() || null : null,
+    activity_type: ['principal', 'secundaria'].includes(a?.activity_type) ? a.activity_type : 'principal',
+    description: typeof a?.description === 'string' ? a.description.trim() || null : null,
+    schedule: typeof a?.schedule === 'string' ? a.schedule.trim() || null : null,
+    confirmation: typeof a?.confirmation === 'string' ? a.confirmation.trim() || null : null,
+    confirmation_other: typeof a?.confirmation_other === 'string' ? a.confirmation_other.trim() || null : null,
+  }));
+};
+
 const toPublicMapPoint = (doc) => {
   const raw = typeof doc?.toObject === 'function' ? doc.toObject() : doc;
 
@@ -32,8 +49,15 @@ const toPublicMapPoint = (doc) => {
     longitude: Number(raw.longitude),
     point_type: String(raw.pointType),
     address: raw.address ?? null,
+    barrio: raw.barrio ?? null,
     phone: raw.phone ?? null,
     email: raw.email ?? null,
+    responsible: raw.responsible ?? null,
+    organization_types: Array.isArray(raw.organizationTypes) ? raw.organizationTypes : [],
+    target_populations: Array.isArray(raw.targetPopulations) ? raw.targetPopulations : [],
+    has_internet: raw.hasInternet ?? null,
+    has_device: raw.hasDevice ?? null,
+    activities: Array.isArray(raw.activities) ? raw.activities : [],
     is_active: Boolean(raw.isActive),
     created_at: new Date(String(raw.createdAt)).toISOString(),
     updated_at: raw.updatedAt ? new Date(String(raw.updatedAt)).toISOString() : null,
@@ -87,8 +111,15 @@ export async function POST(request) {
       longitude,
       pointType,
       address: sanitizeOptional(body?.address),
+      barrio: sanitizeOptional(body?.barrio),
       phone: sanitizeOptional(body?.phone),
       email: sanitizeOptional(body?.email),
+      responsible: sanitizeOptional(body?.responsible),
+      organizationTypes: sanitizeStringArray(body?.organization_types),
+      targetPopulations: sanitizeStringArray(body?.target_populations),
+      hasInternet: typeof body?.has_internet === 'boolean' ? body.has_internet : null,
+      hasDevice: typeof body?.has_device === 'boolean' ? body.has_device : null,
+      activities: sanitizeActivities(body?.activities),
       isActive: typeof body?.is_active === 'boolean' ? body.is_active : true,
     });
 

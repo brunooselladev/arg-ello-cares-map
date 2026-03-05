@@ -34,7 +34,6 @@ const createCustomIcon = (color) => {
 const markerColors = {
     nodo: 'hsl(168, 60%, 40%)',
     centro_escucha: 'hsl(200, 55%, 45%)',
-    comunidad_practicas: 'hsl(280, 40%, 50%)',
 };
 // Gran ArgÃ¼ello center coordinates (approximate)
 const CENTER = [-31.3856, -64.2325];
@@ -49,16 +48,17 @@ function MapController({ center, zoom }) {
 export function InteractiveMap() {
     const [activeFilter, setActiveFilter] = useState(null);
     const { data: points = [], isLoading } = useMapPoints();
+    // comunidad_practicas se gestiona desde la sección de comunidad, no en el mapa
+    const mapPoints = useMemo(() => points.filter((p) => p.point_type !== 'comunidad_practicas'), [points]);
     const filteredPoints = useMemo(() => {
         if (!activeFilter)
-            return points;
-        return points.filter((p) => p.point_type === activeFilter);
-    }, [points, activeFilter]);
+            return mapPoints;
+        return mapPoints.filter((p) => p.point_type === activeFilter);
+    }, [mapPoints, activeFilter]);
     const filterCounts = useMemo(() => {
         return {
-            nodo: points.filter((p) => p.point_type === 'nodo').length,
-            centro_escucha: points.filter((p) => p.point_type === 'centro_escucha').length,
-            comunidad_practicas: points.filter((p) => p.point_type === 'comunidad_practicas').length,
+            nodo: mapPoints.filter((p) => p.point_type === 'nodo').length,
+            centro_escucha: mapPoints.filter((p) => p.point_type === 'centro_escucha').length,
         };
     }, [points]);
     return (<div className="relative w-full h-[600px] md:h-[700px] rounded-xl overflow-hidden shadow-lg">

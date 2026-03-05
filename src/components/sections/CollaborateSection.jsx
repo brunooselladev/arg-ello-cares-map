@@ -68,7 +68,7 @@ export function CollaborateSection() {
                 </p>
                 <div className="pt-4 space-y-3">
                   <Button className="w-full" asChild>
-                    <a href="https://donaronline.org" target="_blank" rel="noopener noreferrer">
+                    <a href="https://donaronline.org/red-de-cuidados-del-gran-arguello/fabrica-de-historias?slid=ca050070-ff58-4e4b-84f6-51cc44073691&svid=c429671b-1f1a-5b27-a480-44747fd5422d&utm_campaign=org_share&utm_content=cmpgn_edit_share&utm_medium=social&utm_source=whatsapp" target="_blank" rel="noopener noreferrer">
                       <ExternalLink className="mr-2 h-4 w-4"/>
                       Donar con DonarOnline
                     </a>

@@ -1,11 +1,12 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/apiClient';
-export function useMapPoints(filterType) {
+export function useMapPoints(filterType, { onlyActive = false } = {}) {
     return useQuery({
-        queryKey: ['map-points', filterType],
+        queryKey: ['map-points', filterType, onlyActive],
         queryFn: () => apiRequest('/map-points', {
             params: {
                 point_type: filterType ?? undefined,
+                only_active: onlyActive ? 'true' : undefined,
             },
         }),
     });

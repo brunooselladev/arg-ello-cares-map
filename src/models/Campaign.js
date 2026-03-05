@@ -18,6 +18,15 @@ const CampaignSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
+    linkUrl: {
+      type: String,
+      default: null,
+    },
+    mediaType: {
+      type: String,
+      enum: ['image', 'video', null],
+      default: null,
+    },
     isActive: {
       type: Boolean,
       default: true,

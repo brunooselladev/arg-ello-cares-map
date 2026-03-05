@@ -31,6 +31,8 @@ const toPublicCampaign = (doc) => {
     description: raw.description ?? null,
     image_url: raw.imageUrl ?? null,
     video_url: raw.videoUrl ?? null,
+    link_url: raw.linkUrl ?? null,
+    media_type: raw.mediaType ?? null,
     is_active: Boolean(raw.isActive),
     start_date: raw.startDate ? new Date(String(raw.startDate)).toISOString().slice(0, 10) : null,
     end_date: raw.endDate ? new Date(String(raw.endDate)).toISOString().slice(0, 10) : null,
@@ -65,6 +67,14 @@ export async function PATCH(request, { params }) {
 
     if (Object.prototype.hasOwnProperty.call(body, 'video_url')) {
       update.videoUrl = sanitizeOptional(body.video_url);
+    }
+
+    if (Object.prototype.hasOwnProperty.call(body, 'link_url')) {
+      update.linkUrl = sanitizeOptional(body.link_url);
+    }
+
+    if (Object.prototype.hasOwnProperty.call(body, 'media_type')) {
+      update.mediaType = ['image', 'video'].includes(body.media_type) ? body.media_type : null;
     }
 
     if (Object.prototype.hasOwnProperty.call(body, 'is_active')) {
